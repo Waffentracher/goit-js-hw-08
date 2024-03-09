@@ -1,4 +1,3 @@
-
 const images = [
   {
     preview:
@@ -72,15 +71,26 @@ galleryList.addEventListener('click', event => {
   
   const target = event.target;
   
-  
+  // Перевіряємо, чи клікнули саме на зображення
   if (target.nodeName === 'IMG') {
-   
+    // Отримуємо посилання на велике зображення з data-атрибуту source
     const largeImageSrc = target.dataset.source;
+    const description = target.alt;
     
+    // Відкриття зображення у лайтбоксі
+    const lightbox = basicLightbox.create(`
+      <img width="1400" height="900" src="${largeImageSrc}" alt="${description}">
+    `);
     
-    console.log('Open original image:', largeImageSrc);
+    // При кліку на велике зображення в лайтбоксі закриваємо його
+    lightbox.element().querySelector('img').addEventListener('click', () => {
+      lightbox.close();
+    });
+    
+    lightbox.show();
   }
 });
+
 const createGalleryItem = ({ preview, original, description }) => {
   return `
     <li class="gallery-item">
@@ -99,4 +109,3 @@ const createGalleryItem = ({ preview, original, description }) => {
 const galleryItemsMarkup = images.map(createGalleryItem).join('');
 
 galleryList.insertAdjacentHTML('beforeend', galleryItemsMarkup);
-
